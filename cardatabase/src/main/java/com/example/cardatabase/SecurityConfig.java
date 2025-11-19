@@ -88,20 +88,43 @@ public class SecurityConfig {
 
     
  // Add Global CORS filter inside the class
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-       UrlBasedCorsConfigurationSource source =  new UrlBasedCorsConfigurationSource();
-       CorsConfiguration config = new CorsConfiguration();
+    // @Bean
+    // public CorsConfigurationSource corsConfigurationSource() {
+    //    UrlBasedCorsConfigurationSource source =  new UrlBasedCorsConfigurationSource();
+    //    CorsConfiguration config = new CorsConfiguration();
        
-       config.setAllowedOrigins(Arrays.asList("*"));
-       // localhost:3000 is allowed
-       // config.setAllowedOrigins(Arrays.asList ("http://localhost:3000"));
-       config.setAllowedMethods(Arrays.asList("*"));
-       config.setAllowedHeaders(Arrays.asList("*"));
-       config.setAllowCredentials(false);
-       config.applyPermitDefaultValues();
-       source.registerCorsConfiguration("/**", config);
+    //    config.setAllowedOrigins(Arrays.asList("*"));
+    //    // localhost:3000 is allowed
+    //    // config.setAllowedOrigins(Arrays.asList ("http://localhost:3000"));
+    //    config.setAllowedMethods(Arrays.asList("*"));
+    //    config.setAllowedHeaders(Arrays.asList("*"));
+    //    config.setAllowCredentials(false);
+    //    config.applyPermitDefaultValues();
+    //    source.registerCorsConfiguration("/**", config);
        
-       return source;
-    }
+    //    return source;
+    // }
+
+  @Bean
+  public CorsConfigurationSource corsConfigurationSource() {
+      CorsConfiguration config = new CorsConfiguration();
+      
+      // Only allow your Netlify frontend
+      config.setAllowedOrigins(Arrays.asList("https://carshopmanagementapp.netlify.app"));
+      
+      // HTTP methods allowed
+      config.setAllowedMethods(Arrays.asList("GET","POST","PUT","DELETE","OPTIONS"));
+      
+      // Allow headers needed for JWT
+      config.setAllowedHeaders(Arrays.asList("Authorization","Content-Type"));
+      
+      // If you use cookies / credentials, set this to true
+      config.setAllowCredentials(true);
+
+      UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+      source.registerCorsConfiguration("/**", config);
+      
+      return source;
+  }
+
 }
